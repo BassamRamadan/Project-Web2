@@ -21,45 +21,30 @@
 
 <script>
 var store_event = window.localStorage;
-var e_load = 0; // to hold actions in load
-var e_Generate = 0; // to hold actions in Generate
-var e_click = 0; // to hold actions in click
-var e_unload = 0; // to hold actions in unload
-
 
     window.addEventListener("load", function(e){
-       e_load++;
-       var action =e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString();
-       store_event.setItem("load"+e_load,action);
+       AddEventTo_LocalStorage("load" , e);
     });
     window.addEventListener("unload", function(e){
-        e_unload++;
-        var action = e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString();
-        store_event.setItem("unload"+e_unload,action);
-        alert(e_unload+1);
+        AddEventTo_LocalStorage("unload", e);
     });
     setInterval(function(){
-        e_Generate = 0;
-        e_click = 0;
-        e_load = 0;
-        e_unload = 0;
         store_event.clear();
-    },5000);
+    },10000);
 
 var Generate = document.getElementById("characterView");
+var divCharacters = document.getElementById("divCharacters");
+var divImage = document.getElementById("divImage");
+
 Generate.addEventListener("click",function(e){
-    var divCharacters = document.getElementById("divCharacters");
-    var divImage = document.getElementById("divImage");
+   
     var txt = document.getElementsByTagName("input")[0];
     var n = parseInt(txt.value);
 
     if(n>=1 && n<=26){
     
         // localStorage of Generate Button and is valid
-        e_Generate++;
-        var action = e.type + " , "+ e.target +"valid at Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
-        store_event.setItem("Generate"+e_Generate,action);
-
+        AddEventTo_LocalStorage("Generate", e);
         // to remove the previos element in divCharacters and divImage
         if (divCharacters.childNodes.length!=0){
                 while (divCharacters.childNodes.length!=0) {
@@ -97,9 +82,7 @@ Generate.addEventListener("click",function(e){
             characterView.style.borderWidth = '1px';
             // add event to element when chicled
             characterView.addEventListener("click",function(e){
-                e_click++;
-                var action= e.type + " , "+ e.target +"Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
-                store_event.setItem("Click On Character"+e_click,action);
+                AddEventTo_LocalStorage("click to character", e);
                 // reset all element and add borderColor=red to the only element that has been selected
                 var list = divCharacters.childNodes;
                 for(var j=0;j<list.length;j++){
@@ -121,16 +104,15 @@ Generate.addEventListener("click",function(e){
             });
             divCharacters.appendChild(characterView);
         }
-        
     }else{
-        e_Generate++;
-        var action = e.type + " , "+ e.target +"invalid at Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
-        store_event.setItem("Generate"+e_Generate,action);
-        alert("Please Enter Number from 1 to 26 ");
+         alert("Please Enter Number from 1 to 26 ");
     }
-  
-    
 });
-
+function AddEventTo_LocalStorage(nameEvent , e){
+    var OldActions = store_event.getItem(nameEvent)
+    OldActions = (OldActions!==null ? OldActions : "");
+    var NewAction = e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
+    store_event.setItem(nameEvent,OldActions+NewAction);
+}
 </script>
 </html>
