@@ -109,7 +109,7 @@ Generate.addEventListener("click",function(e){
     }
 });
 function AddEventTo_LocalStorage(nameEvent , e){
-    var OldActions = store_event.getItem(nameEvent)
+    var OldActions = store_event.getItem(nameEvent);
     OldActions = (OldActions!==null ? OldActions : "");
     var NewAction = e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
     store_event.setItem(nameEvent,OldActions+NewAction);
