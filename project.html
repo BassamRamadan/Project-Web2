@@ -23,10 +23,12 @@
 var store_event = window.localStorage;
 
     window.addEventListener("load", function(e){
-       AddEventTo_LocalStorage("load" , e);
+      var temp_load = new AddEventTo_LocalStorage("load" , e);
+      temp_load.addEvent();
     });
     window.addEventListener("unload", function(e){
-        AddEventTo_LocalStorage("unload", e);
+        var temp_unload = new AddEventTo_LocalStorage("unload", e);
+        temp_unload.addEvent();
     });
     setInterval(function(){
         store_event.clear();
@@ -44,7 +46,10 @@ Generate.addEventListener("click",function(e){
     if(n>=1 && n<=26){
     
         // localStorage of Generate Button and is valid
-        AddEventTo_LocalStorage("Generate", e);
+        var temp_Generate = new AddEventTo_LocalStorage("Generate", e);
+        temp_Generate.addEvent();
+
+        
         // to remove the previos element in divCharacters and divImage
         if (divCharacters.childNodes.length!=0){
                 while (divCharacters.childNodes.length!=0) {
@@ -82,7 +87,10 @@ Generate.addEventListener("click",function(e){
             characterView.style.borderWidth = '1px';
             // add event to element when chicled
             characterView.addEventListener("click",function(e){
-                AddEventTo_LocalStorage("click to character", e);
+
+                var temp_click = new AddEventTo_LocalStorage("click to character", e);
+                temp_click.addEvent();
+
                 // reset all element and add borderColor=red to the only element that has been selected
                 var list = divCharacters.childNodes;
                 for(var j=0;j<list.length;j++){
@@ -108,11 +116,15 @@ Generate.addEventListener("click",function(e){
          alert("Please Enter Number from 1 to 26 ");
     }
 });
-function AddEventTo_LocalStorage(nameEvent , e){
-    var OldActions = store_event.getItem(nameEvent);
-    OldActions = (OldActions!==null ? OldActions : "");
-    var NewAction = e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
-    store_event.setItem(nameEvent,OldActions+NewAction);
+function AddEventTo_LocalStorage(nameEvent , e,addEvent){
+    this.nameEvent = nameEvent;
+    this.e = e;
+    this.addEvent = function(){
+        var OldActions = store_event.getItem(nameEvent);
+        OldActions = (OldActions!==null ? OldActions : "");
+        var NewAction = e.type + " , "+ e.target +" Date : "+new Date().toLocaleDateString()+", Time : "+new Date().toLocaleTimeString()+"\n";
+        store_event.setItem(nameEvent,OldActions+NewAction);
+    }
 }
 </script>
 </html>
