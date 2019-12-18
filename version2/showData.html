@@ -1,0 +1,26 @@
+<html>
+<head>
+
+</head>
+<body>
+   
+</body>
+<script src="jquery3.2.1.min.js"></script>
+<script>
+ setInterval(function(){
+        $.ajax({
+                "type":"GET",
+                "url" : "http://localhost/dashboard/ProjectWeb2Version2/getData.php",
+                "data" :  null,
+                "success" : function(response){
+                    console.log("done");
+                    console.log(response);
+    
+                }
+
+            });
+    },5000);
+
+</script>
+
+</html>
